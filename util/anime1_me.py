@@ -26,7 +26,7 @@ class Anime1Me:
         # print('title', title)
         text = self._request('https://anime1.me')
         text = html.unescape(text)
-        m = re.search(r'>{}</a></td><td class=\"column-2\">(.+?)</td>'.format(re.escape(title)), text)
+        m = re.search(r'>{}\s*</a></td><td class=\"column-2\">(.+?)</td>'.format(re.escape(title)), text)
         if m:
             episodes = m.group(1)
             data['episodes'], data['end'] = self._parse_episodes(episodes)

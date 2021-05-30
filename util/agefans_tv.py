@@ -36,9 +36,13 @@ class AgefansTv:
         url = claims['P76'][0].getTarget()
         data = self.getData(url)
 
+        episodesOffset = 0
+        if 'P80' in claims['P76'][0].qualifiers:
+            episodesOffset = claims['P76'][0].qualifiers['P80'][0].getTarget().amount
+
         # 總集數
         if 'episodes' in data:
-            new_episodes = data['episodes']
+            new_episodes = data['episodes'] + episodesOffset
             if 'P27' in claims:
                 episodesValue = claims['P27'][0].getTarget()
                 old_episodes = episodesValue.amount

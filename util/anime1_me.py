@@ -1,5 +1,6 @@
 import argparse
 import html
+import json
 import logging
 import re
 from functools import lru_cache
@@ -24,15 +25,12 @@ class Anime1Me:
         title = titleel.text
 
         # print('title', title)
-        text = self._request('https://anime1.me')
-        text = html.unescape(text)
-        m = re.search(r'>{}\s*</a></td><td class=\"column-2\">(.+?)</td>'.format(re.escape(title)), text)
-        if m:
-            episodes = m.group(1)
-            data['episodes'], data['end'] = self._parse_episodes(episodes)
-        else:
-            # print('Not match')
-            pass
+        text = self._request('https://d1zquzjgwo9yb.cloudfront.net/')
+        listdata = json.loads(text)
+        for row in listdata:
+            if row[1] == title:
+                data['episodes'], data['end'] = self._parse_episodes(row[2])
+                break
 
         return data
 
@@ -94,17 +92,18 @@ class Anime1Me:
         # 總集數
         if 'episodes' in data:
             new_episodes = data['episodes']
-            episodesValue = claims['P27'][0].getTarget()
-            old_episodes = episodesValue.amount
-            if new_episodes > old_episodes:
-                episodesValue.amount = new_episodes
-                logging.info('\t Update episodes from %s to %s', old_episodes, new_episodes)
-                claims['P27'][0].changeTarget(episodesValue, summary='更新總集數')
-        else:
-            new_claim = pywikibot.page.Claim(datasite, 'P27')
-            new_claim.setTarget(pywikibot.WbQuantity(new_episodes, site=datasite))
-            logging.info('\t Add new episodes %s', new_episodes)
-            item.addClaim(new_claim, summary='新增總集數')
+            if 'P27' in claims:
+                episodesValue = claims['P27'][0].getTarget()
+                old_episodes = episodesValue.amount
+                if new_episodes > old_episodes:
+                    episodesValue.amount = new_episodes
+                    logging.info('\t Update episodes from %s to %s', old_episodes, new_episodes)
+                    claims['P27'][0].changeTarget(episodesValue, summary='更新總集數')
+            else:
+                new_claim = pywikibot.page.Claim(datasite, 'P27')
+                new_claim.setTarget(pywikibot.WbQuantity(new_episodes, site=datasite))
+                logging.info('\t Add new episodes %s', new_episodes)
+                item.addClaim(new_claim, summary='新增總集數')
 
         # 播放狀態
         if 'P31' in claims:

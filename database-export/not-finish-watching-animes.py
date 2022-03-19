@@ -23,7 +23,7 @@ for backlink in pywikibot.ItemPage(datasite, 'Q58').backlinks(namespaces=[120]):
         if seen > 0 and seen != episodes:
             text += '{{{{動畫表格列|{}}}}}\n'.format(backlink.title().replace('Item:', ''))
 
-text += '|}'
+text += '|}\n\n{{各年動畫列表}}'
 
 page = pywikibot.Page(site, 'Project:尚未看完的動畫')
 page.text = text

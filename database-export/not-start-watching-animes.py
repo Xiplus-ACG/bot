@@ -24,7 +24,7 @@ for backlink in pywikibot.ItemPage(datasite, 'Q58').backlinks(namespaces=[120]):
     else:
         text += '{{{{動畫表格列|{}}}}}\n'.format(backlink.title().replace('Item:', ''))
 
-text += '|}'
+text += '|}\n\n{{各年動畫列表}}'
 
 page = pywikibot.Page(site, 'Project:尚未開始看的動畫')
 page.text = text

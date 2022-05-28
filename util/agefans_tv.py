@@ -18,8 +18,14 @@ class AgefansTv:
         soup = BeautifulSoup(text, 'html.parser')
         data = {}
 
-        movurl = soup.find('div', {'class': 'movurl', 'style': 'display:block'})
-        data['episodes'] = len(movurl.findAll('li'))
+        data['other_episodes'] = []
+        for movurl in soup.find_all('div', {'class': 'movurl'}):
+            cnt = len(movurl.findAll('li'))
+            data['other_episodes'].append(cnt)
+            if movurl.get('style') == 'display:block':
+                data['episodes'] = cnt
+        if 'episodes' not in data:
+            data['episodes'] = max(data['other_episodes'])
 
         return data
 
@@ -36,13 +42,22 @@ class AgefansTv:
         url = claims['P76'][0].getTarget()
         data = self.getData(url)
 
+        # 總集數
         episodesOffset = 0
         if 'P80' in claims['P76'][0].qualifiers:
             episodesOffset = claims['P76'][0].qualifiers['P80'][0].getTarget().amount
 
-        # 總集數
-        if 'episodes' in data:
+        new_episodes = None
+        if 'P81' in claims['P76'][0].qualifiers:
+            idx = int(claims['P76'][0].qualifiers['P81'][0].getTarget().amount) - 1
+            try:
+                new_episodes = data['other_episodes'][idx] + episodesOffset
+            except IndexError as e:
+                logging.error('\t P81 IndexError: %s', idx)
+        if new_episodes is None and 'episodes' in data:
             new_episodes = data['episodes'] + episodesOffset
+
+        if new_episodes:
             if 'P27' in claims:
                 episodesValue = claims['P27'][0].getTarget()
                 old_episodes = episodesValue.amount

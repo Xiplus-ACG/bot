@@ -16,7 +16,9 @@ class AgefansTv:
         headers = {'User-Agent': self.ua.random}
         text = requests.get(url, headers=headers).text
         soup = BeautifulSoup(text, 'html.parser')
-        data = {}
+        data = {
+            'end': False
+        }
 
         data['other_episodes'] = []
         for movurl in soup.find_all('div', {'class': 'movurl'}):
@@ -26,6 +28,13 @@ class AgefansTv:
                 data['episodes'] = cnt
         if 'episodes' not in data:
             data['episodes'] = max(data['other_episodes'])
+        for li in soup.find_all('li', {'class': 'detail_imform_kv'}):
+            tag = li.find('span', {'class': 'detail_imform_tag'})
+            value = li.find('span', {'class': 'detail_imform_value'})
+            if tag and value:
+                if '播放状态' in tag.text:
+                    if '完结' in value.text:
+                        data['end'] = True
 
         return data
 
@@ -72,10 +81,24 @@ class AgefansTv:
                 item.addClaim(new_claim, summary='新增總集數')
 
         # 播放狀態
-        if 'P31' in claims and claims['P31'][0].getTarget().id == 'Q57':
-            logging.info('\t Update status to playing')
-            statusValue = pywikibot.ItemPage(datasite, 'Q56')
-            claims['P31'][0].changeTarget(statusValue, summary='更新播放狀態')
+        if 'P31' in claims:
+            if data['end']:
+                if claims['P31'][0].getTarget().id != 'Q58':
+                    logging.info('\t Update status to end')
+                    statusValue = pywikibot.ItemPage(datasite, 'Q58')  # 已完結
+                    claims['P31'][0].changeTarget(statusValue, summary='更新播放狀態')
+            elif claims['P31'][0].getTarget().id == 'Q57':
+                logging.info('\t Update status to playing')
+                statusValue = pywikibot.ItemPage(datasite, 'Q56')  # 放送中
+                claims['P31'][0].changeTarget(statusValue, summary='更新播放狀態')
+        else:
+            itemid = 'Q56'
+            if data['end']:
+                itemid = 'Q58'
+            new_claim = pywikibot.page.Claim(datasite, 'P31')
+            new_claim.setTarget(pywikibot.ItemPage(datasite, itemid))
+            logging.info('\t Add new status')
+            item.addClaim(new_claim, summary='新增播放狀態')
 
 
 if __name__ == "__main__":

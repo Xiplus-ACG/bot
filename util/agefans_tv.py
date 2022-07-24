@@ -45,7 +45,7 @@ class AgefansTv:
         claims = item.get()['claims']
 
         if 'P76' not in claims:
-            logging.error('\t No age claims')
+            logging.warning('\t No age claims')
             return
 
         url = claims['P76'][0].getTarget()

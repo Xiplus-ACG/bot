@@ -52,8 +52,8 @@ class AniGamerComTwAnimeVideo:
                         data['episodes'] += episodes
                         data['other_episodes'][p.text] = episodes
             else:
-            for ul in season.findAll('ul'):
-                data['episodes'] += len(ul.findAll('li'))
+                for ul in season.findAll('ul'):
+                    data['episodes'] += len(ul.findAll('li'))
 
         rating = soup.find('div', {'class': 'rating'})
         if rating:
@@ -81,7 +81,7 @@ class AniGamerComTwAnimeVideo:
         claims = item.get()['claims']
 
         if 'P34' not in claims:
-            logging.error('\t No anime gamer claims')
+            logging.warning('\t No anime gamer claims')
             return
 
         url = claims['P34'][0].getTarget()
@@ -135,7 +135,7 @@ class AniGamerComTwAnimeVideo:
                 season = claims['P34'][0].qualifiers['P82'][0].getTarget()
                 new_episodes = data['other_episodes'][season] + episodesOffset
             else:
-            new_episodes = data['episodes'] + episodesOffset
+                new_episodes = data['episodes'] + episodesOffset
             if 'P27' in claims:
                 episodesValue = claims['P27'][0].getTarget()
                 old_episodes = episodesValue.amount

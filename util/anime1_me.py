@@ -80,7 +80,7 @@ class Anime1Me:
         claims = item.get()['claims']
 
         if 'P38' not in claims:
-            logging.error('\t No anime1 claims')
+            logging.warning('\t No anime1 claims')
             return
 
         url = claims['P38'][0].getTarget()

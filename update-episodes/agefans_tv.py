@@ -4,10 +4,10 @@ import importlib
 import logging
 import os
 import sys
+import traceback
 
 os.environ['PYWIKIBOT_DIR'] = os.path.dirname(os.path.realpath(__file__))
 import pywikibot
-
 
 logging.basicConfig(
     level=logging.INFO,
@@ -31,9 +31,15 @@ def updateEpisodes(title):
 
 def main():
     for backlink in pywikibot.ItemPage(datasite, 'Q56').backlinks(namespaces=[120]):  # 放送中
-        updateEpisodes(backlink.title())
+        try:
+            updateEpisodes(backlink.title())
+        except Exception:
+            logging.error(traceback.format_exc())
     for backlink in pywikibot.ItemPage(datasite, 'Q57').backlinks(namespaces=[120]):  # 尚未放送
-        updateEpisodes(backlink.title())
+        try:
+            updateEpisodes(backlink.title())
+        except Exception:
+            logging.error(traceback.format_exc())
 
 
 if __name__ == "__main__":

@@ -43,6 +43,15 @@ class AniGamerComTwAnimeVideo:
             data['episodes'] = 1
         else:
             data['episodes'] = 0
+            if season.find('p'):
+                data['other_episodes'] = {}
+                for p in season.findAll('p'):
+                    ul = p.findNext('ul')
+                    if ul:
+                        episodes = len(ul.findAll('li'))
+                        data['episodes'] += episodes
+                        data['other_episodes'][p.text] = episodes
+            else:
             for ul in season.findAll('ul'):
                 data['episodes'] += len(ul.findAll('li'))
 
@@ -122,6 +131,10 @@ class AniGamerComTwAnimeVideo:
 
         # 總集數
         if 'episodes' in data:
+            if 'P82' in claims['P34'][0].qualifiers:
+                season = claims['P34'][0].qualifiers['P82'][0].getTarget()
+                new_episodes = data['other_episodes'][season] + episodesOffset
+            else:
             new_episodes = data['episodes'] + episodesOffset
             if 'P27' in claims:
                 episodesValue = claims['P27'][0].getTarget()

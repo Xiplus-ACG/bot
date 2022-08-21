@@ -30,7 +30,11 @@ class AniGamerComTwAnimeVideo:
     def getData(self, url):
         headers = {'User-Agent': self.ua.random}
         text = requests.get(url, headers=headers).text
-        data = {}
+        data = {
+            'removed': False,
+            'episodes': [],
+            'other_episodes': {},
+        }
 
         if '目前無此動畫或動畫授權已到期！' in text:
             data['removed'] = True
@@ -40,20 +44,20 @@ class AniGamerComTwAnimeVideo:
 
         season = soup.find('section', {'class': 'season'})
         if season is None:
-            data['episodes'] = 1
+            data['episodes'].append('')
         else:
-            data['episodes'] = 0
             if season.find('p'):
                 data['other_episodes'] = {}
                 for p in season.findAll('p'):
                     ul = p.findNext('ul')
                     if ul:
-                        episodes = len(ul.findAll('li'))
-                        data['episodes'] += episodes
-                        data['other_episodes'][p.text] = episodes
+                        for li in ul.findAll('li'):
+                            data['episodes'].append(li.text)
+                            data['other_episodes'][p.text].append(li.text)
             else:
                 for ul in season.findAll('ul'):
-                    data['episodes'] += len(ul.findAll('li'))
+                    for li in ul.findAll('li'):
+                        data['episodes'].append(li.text)
 
         rating = soup.find('div', {'class': 'rating'})
         if rating:
@@ -133,9 +137,18 @@ class AniGamerComTwAnimeVideo:
         if 'episodes' in data:
             if 'P82' in claims['P34'][0].qualifiers:
                 season = claims['P34'][0].qualifiers['P82'][0].getTarget()
-                new_episodes = data['other_episodes'][season] + episodesOffset
+                episodesNames = data['other_episodes'][season]
             else:
-                new_episodes = data['episodes'] + episodesOffset
+                episodesNames = data['episodes']
+            if 'P83' in claims['P34'][0].qualifiers:
+                pattern = claims['P34'][0].qualifiers['P83'][0].getTarget()
+                new_episodes = 0
+                for name in episodesNames:
+                    if re.search(pattern, name):
+                        new_episodes += 1
+            else:
+                new_episodes = len(episodesNames)
+            new_episodes += episodesOffset
             if 'P27' in claims:
                 episodesValue = claims['P27'][0].getTarget()
                 old_episodes = episodesValue.amount

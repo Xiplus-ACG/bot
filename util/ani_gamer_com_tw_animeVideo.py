@@ -51,6 +51,7 @@ class AniGamerComTwAnimeVideo:
                 for p in season.findAll('p'):
                     ul = p.findNext('ul')
                     if ul:
+                        data['other_episodes'][p.text] = []
                         for li in ul.findAll('li'):
                             data['episodes'].append(li.text)
                             data['other_episodes'][p.text].append(li.text)

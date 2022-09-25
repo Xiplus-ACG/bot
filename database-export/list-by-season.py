@@ -48,7 +48,7 @@ for year in result:
     result[year].sort()
     for row in result[year]:
         if row[2]:
-            text += '<onlyinclude>{{{{動畫表格列|{}}}}}</onlyinclude>\n'.format(row[1])
+            text += '<onlyinclude>{{{{動畫表格列|{}}}}}\n</onlyinclude>'.format(row[1])
         else:
             text += '{{{{動畫表格列|{}}}}}\n'.format(row[1])
     text += '|}\n\n{{各年動畫列表}}'

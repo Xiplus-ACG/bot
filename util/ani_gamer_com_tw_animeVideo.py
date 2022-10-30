@@ -79,7 +79,7 @@ class AniGamerComTwAnimeVideo:
 
         return data
 
-    def updateItem(self, datasite, item):
+    def updateItem(self, datasite, item, data):
         itemlabel = item.get()['labels']['zh-tw']
         logging.info('%s %s', item.id, itemlabel)
 
@@ -90,7 +90,6 @@ class AniGamerComTwAnimeVideo:
             return
 
         url = claims['P34'][0].getTarget()
-        data = self.getData(url)
 
         episodesOffset = 0
         if 'P80' in claims['P34'][0].qualifiers:
@@ -136,19 +135,7 @@ class AniGamerComTwAnimeVideo:
 
         # 總集數
         if 'episodes' in data:
-            if 'P82' in claims['P34'][0].qualifiers:
-                season = claims['P34'][0].qualifiers['P82'][0].getTarget()
-                episodesNames = data['other_episodes'][season]
-            else:
-                episodesNames = data['episodes']
-            if 'P83' in claims['P34'][0].qualifiers:
-                pattern = claims['P34'][0].qualifiers['P83'][0].getTarget()
-                new_episodes = 0
-                for name in episodesNames:
-                    if re.search(pattern, name):
-                        new_episodes += 1
-            else:
-                new_episodes = len(episodesNames)
+            new_episodes = data['episodes']
             new_episodes += episodesOffset
             if 'P27' in claims:
                 episodesValue = claims['P27'][0].getTarget()

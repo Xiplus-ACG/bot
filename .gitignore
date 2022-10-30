@@ -1,6 +1,7 @@
 __pycache__/
 apicache-py3/
 *.csv
+*.html
 config.py
 pywikibot.lwp
 throttle.ctrl

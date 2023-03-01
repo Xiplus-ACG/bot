@@ -13,7 +13,7 @@ site.login()
 datasite = site.data_repository()
 
 DATE_PLAYING = pywikibot.Timestamp.now() - timedelta(days=365)
-DATE_END = pywikibot.Timestamp.now() - timedelta(days=90)
+DATE_END = pywikibot.Timestamp.now() - timedelta(days=105)
 
 result = dict()
 for backlink in pywikibot.ItemPage(datasite, 'Q53').backlinks():  # 動畫

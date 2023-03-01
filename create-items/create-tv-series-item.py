@@ -10,7 +10,7 @@ from pywikibot.data.api import Request
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 zhsite = pywikibot.Site('zh', 'wikipedia')
 
 STATUS_QID = ['Q57', 'Q56', 'Q58']

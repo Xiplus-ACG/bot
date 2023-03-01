@@ -10,7 +10,7 @@ os.environ['TZ'] = 'UTC'
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 
 DATE_PLAYING = pywikibot.Timestamp.now() - timedelta(days=365)
 DATE_END = pywikibot.Timestamp.now() - timedelta(days=105)

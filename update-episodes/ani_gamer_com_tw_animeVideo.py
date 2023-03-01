@@ -24,7 +24,7 @@ animeSite = (importlib.import_module('util.ani_gamer_com_tw_animeVideo', 'AniGam
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 
 
 def main():

@@ -12,7 +12,7 @@ from config import API, PASSWORD, USER  # pylint: disable=E0611
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 zhsite = pywikibot.Site('zh', 'wikipedia')
 moesite = pywikibot.Site('zh', 'moegirl')
 

@@ -8,7 +8,7 @@ import pywikibot
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 
 wdsite = pywikibot.Site('wikidata', 'wikidata')
 wdsite.login()

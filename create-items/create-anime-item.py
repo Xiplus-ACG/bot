@@ -16,7 +16,7 @@ animeSite = (importlib.import_module('util.acg_gamer_com_tw_acgDetail', 'AcgGame
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 zhsite = pywikibot.Site('zh', 'wikipedia')
 
 STATUS_QID = ['Q57', 'Q56', 'Q58']

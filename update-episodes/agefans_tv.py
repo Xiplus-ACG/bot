@@ -20,7 +20,7 @@ animeSite = (importlib.import_module('util.agefans_tv', 'AgefansTv')
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 
 
 def updateEpisodes(title):

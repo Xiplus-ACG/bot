@@ -19,7 +19,7 @@ animeSite = importlib.import_module('util.anime1_me', 'Anime1Me').Anime1Me()
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 
 
 def updateEpisodes(title):

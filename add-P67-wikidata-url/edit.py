@@ -9,7 +9,7 @@ import pywikibot
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 
 
 def addWikidataUrl(title, targettitle):

@@ -9,7 +9,7 @@ os.environ['TZ'] = 'UTC'
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 
 platforms = {
     'all': '所有',

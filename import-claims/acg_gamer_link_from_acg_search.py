@@ -17,7 +17,7 @@ logging.basicConfig(
 
 site = pywikibot.Site()
 site.login()
-datasite = site.data_repository()
+datasite = pywikibot.DataSite('myacg')
 
 
 def main(title):

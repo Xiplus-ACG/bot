@@ -144,6 +144,8 @@ class AniGamerComTwAnimeVideo:
                     episodesValue.amount = new_episodes
                     logging.info('\t Update episodes from %s to %s', old_episodes, new_episodes)
                     claims['P27'][0].changeTarget(episodesValue, summary='更新總集數')
+                elif new_episodes < old_episodes:
+                    logging.warning('\t New episodes %s less than old episodes %s', new_episodes, old_episodes)
             else:
                 new_claim = pywikibot.page.Claim(datasite, 'P27')
                 new_claim.setTarget(pywikibot.WbQuantity(new_episodes, site=datasite))

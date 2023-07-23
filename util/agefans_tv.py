@@ -21,20 +21,22 @@ class AgefansTv:
         }
 
         data['other_episodes'] = []
-        for movurl in soup.find_all('div', {'class': 'movurl'}):
+        for movurl in soup.find_all('ul', {'class': 'video_detail_episode'}):
             cnt = len(movurl.findAll('li'))
             data['other_episodes'].append(cnt)
             if movurl.get('style') == 'display:block':
                 data['episodes'] = cnt
         if 'episodes' not in data:
             data['episodes'] = max(data['other_episodes'])
-        for li in soup.find_all('li', {'class': 'detail_imform_kv'}):
-            tag = li.find('span', {'class': 'detail_imform_tag'})
-            value = li.find('span', {'class': 'detail_imform_value'})
-            if tag and value:
-                if '播放状态' in tag.text:
-                    if '完结' in value.text:
-                        data['end'] = True
+        detail_imform_list = soup.find('ul', {'class': 'detail_imform_list'})
+        if detail_imform_list:
+            for li in detail_imform_list.find_all('li'):
+                tag = li.find('span', {'class': 'detail_imform_tag'})
+                value = li.find('span', {'class': 'detail_imform_value'})
+                if tag and value:
+                    if '播放状态' in tag.text:
+                        if '完结' in value.text:
+                            data['end'] = True
 
         return data
 

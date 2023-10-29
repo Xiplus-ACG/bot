@@ -42,7 +42,7 @@ def main():
     text = requests.get(url, headers=headers).text
 
     soup = BeautifulSoup(text, 'html.parser')
-    for card in soup.find_all('a', {'class': 'anime-card-block'}):
+    for card in reversed(soup.find('div', {'class': 'timeline-ver'}).find_all('a', {'class': 'anime-card-block'})):
         anime_name = card.find('div', {'class': 'anime-name'}).find('p').text
         episode_p = card.find('div', {'class': 'anime-episode'}).find('p')
 

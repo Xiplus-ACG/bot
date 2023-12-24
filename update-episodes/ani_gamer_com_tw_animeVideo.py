@@ -51,6 +51,9 @@ def main():
             m = re.search(r'^第(\d+)集$', episode_p.text)
             if m:
                 anime_episode = int(m.group(1))
+            m = re.search(r'^第(\d+)\.5集$', episode_p.text)
+            if m:
+                anime_episode = int(m.group(1)) + 1
         else:
             anime_episode = 1
 

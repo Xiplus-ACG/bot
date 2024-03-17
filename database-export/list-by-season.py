@@ -15,7 +15,9 @@ datasite = pywikibot.DataSite('myacg')
 DATE_PLAYING = pywikibot.Timestamp.now() - timedelta(days=365)
 DATE_END = pywikibot.Timestamp.now() - timedelta(days=105)
 
-result = dict()
+result = {
+    'unknown': [],
+}
 for backlink in pywikibot.ItemPage(datasite, 'Q53').backlinks():  # 動畫
     item = pywikibot.ItemPage(datasite, backlink.title())
     claims = item.get()['claims']
@@ -40,6 +42,8 @@ for backlink in pywikibot.ItemPage(datasite, 'Q53').backlinks():  # 動畫
             result[date.year] = []
 
         result[date.year].append((date.month * 100 + date.day, item.getID(), include))
+    else:
+        result['unknown'].append((None, item.getID(), False))
 
 for year in result:
     print('year', year)
@@ -54,7 +58,10 @@ for year in result:
     text += '|}\n\n{{各年動畫列表}}'
     text = re.sub(r'</onlyinclude>(\n*)<onlyinclude>', r'\1', text)
 
-    title = '{}年動畫列表'.format(year)
+    if year == 'unknown':
+        title = '未知年份動畫列表'
+    else:
+        title = '{}年動畫列表'.format(year)
     page = pywikibot.Page(site, title)
     page.text = text
     page.save(summary='產生列表')

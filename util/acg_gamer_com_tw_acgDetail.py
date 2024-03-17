@@ -34,9 +34,10 @@ class AcgGamerComTwAcgDetail:
         data = {}
 
         box1listA = soup.find('ul', {'class': 'ACG-box1listA'})
-        episodes = re.search(r'播出集數：(\d+)', box1listA.text)
-        if episodes:
-            data['episodes'] = int(episodes.group(1))
+        if box1listA:
+            episodes = re.search(r'播出集數：(\d+)', box1listA.text)
+            if episodes:
+                data['episodes'] = int(episodes.group(1))
 
         year = re.search(r'當地(?:首播|發售)：(\d{4})-(\d{2})-(\d{2})', box1listA.text)
         if year:

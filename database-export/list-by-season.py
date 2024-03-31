@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import re
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 os.environ['PYWIKIBOT_DIR'] = os.path.dirname(os.path.realpath(__file__))
 import pywikibot
@@ -50,13 +50,17 @@ for year in result:
 
     text = '{{動畫表格列標題}}\n'
     result[year].sort()
+    anyOnlyinclude = False
     for row in result[year]:
         if row[2]:
+            anyOnlyinclude = True
             text += '<onlyinclude>{{{{動畫表格列|{}}}}}\n</onlyinclude>'.format(row[1])
         else:
             text += '{{{{動畫表格列|{}}}}}\n'.format(row[1])
     text += '|}\n\n{{各年動畫列表}}'
     text = re.sub(r'</onlyinclude>(\n*)<onlyinclude>', r'\1', text)
+    if not anyOnlyinclude and isinstance(year, int) and year >= datetime.today().year - 1:
+        text += '<onlyinclude></onlyinclude>'
 
     if year == 'unknown':
         title = '未知年份動畫列表'

@@ -51,6 +51,12 @@ class AcgGamerComTwAcgDetail:
                 data['rating'] = self.RATING_IMG[m.group(1)]
                 break
 
+        seasonACG = soup.find('div', {'class': 'seasonACG'})
+        if seasonACG:
+            firstA = seasonACG.find('a')
+            if firstA:
+                data['aniGamer'] = 'https:' + firstA.get('href')
+
         return data
 
     def _get_wbtime(self, year):
@@ -145,6 +151,14 @@ class AcgGamerComTwAcgDetail:
 
                 logging.info('\t Add new rating %s', data['rating'])
                 item.addClaim(new_claim, summary='新增台灣分級')
+
+        # 動畫瘋影片網址
+        if 'aniGamer' in data:
+            if 'P34' not in claims:
+                new_claim = pywikibot.page.Claim(datasite, 'P34')
+                new_claim.setTarget(data['aniGamer'])
+                logging.info('\t Add new ani.gamer url %s', data['aniGamer'])
+                item.addClaim(new_claim, summary='新增巴哈姆特動畫瘋連結')
 
 
 if __name__ == "__main__":

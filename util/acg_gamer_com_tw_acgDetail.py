@@ -39,9 +39,9 @@ class AcgGamerComTwAcgDetail:
             if episodes:
                 data['episodes'] = int(episodes.group(1))
 
-        year = re.search(r'當地(?:首播|發售)：(\d{4})-(\d{2})-(\d{2})', box1listA.text)
-        if year:
-            data['year'] = year.group(1) + year.group(2) + year.group(3)
+            year = re.search(r'當地(?:首播|發售)：(\d{4})-(\d{2})-(\d{2})', box1listA.text)
+            if year:
+                data['year'] = year.group(1) + year.group(2) + year.group(3)
 
         box1mark = soup.find('p', {'id': 'ACG-box1mark'})
 

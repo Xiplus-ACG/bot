@@ -106,6 +106,13 @@ class AcgGamerComTwAcgDetail:
                 logging.info('\t Add new episodes %s', new_episodes)
                 item.addClaim(new_claim, summary='新增總集數')
 
+        # 播放狀態
+        if 'P31' not in claims:
+            new_claim = pywikibot.page.Claim(datasite, 'P31')
+            new_claim.setTarget(pywikibot.ItemPage(datasite, 'Q58'))
+            logging.info('\t Add status')
+            item.addClaim(new_claim, summary='新增播放狀態')
+
         # 年份
         if 'year' in data:
             if 'P29' in claims:

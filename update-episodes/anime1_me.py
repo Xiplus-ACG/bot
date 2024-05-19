@@ -6,7 +6,8 @@ import os
 import sys
 import traceback
 
-os.environ['PYWIKIBOT_DIR'] = os.path.dirname(os.path.realpath(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+os.environ['PYWIKIBOT_DIR'] = BASE_DIR
 import pywikibot
 
 logging.basicConfig(
@@ -14,7 +15,7 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)-8s %(message)s',
 )
 
-sys.path.append('..')
+sys.path.append(os.path.dirname(BASE_DIR))
 animeSite = importlib.import_module('util.anime1_me', 'Anime1Me').Anime1Me()
 
 site = pywikibot.Site()

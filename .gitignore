@@ -3,7 +3,7 @@ apicache-py3/
 *.csv
 *.html
 config.py
-pywikibot.lwp
+pywikibot*.lwp
 throttle.ctrl
 user-config.py
 user-password.py

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import importlib
 import logging
 import os
@@ -28,7 +29,7 @@ site.login()
 datasite = pywikibot.DataSite('myacg')
 
 
-def main():
+def main(title=None):
     title_map = {}
     for backlink in pywikibot.ItemPage(datasite, 'Q56').backlinks(namespaces=[120]):  # 放送中
         item = pywikibot.ItemPage(datasite, backlink.title())
@@ -36,6 +37,9 @@ def main():
     for backlink in pywikibot.ItemPage(datasite, 'Q57').backlinks(namespaces=[120]):  # 尚未放送
         item = pywikibot.ItemPage(datasite, backlink.title())
         title_map[item.get()['labels']['zh-tw']] = backlink.title()
+    if title:
+        item = pywikibot.ItemPage(datasite, title)
+        title_map[item.get()['labels']['zh-tw']] = title
 
     url = 'https://ani.gamer.com.tw/'
     ua = UserAgent()
@@ -70,4 +74,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('title', nargs='?')
+    args = parser.parse_args()
+    main(args.title)

@@ -48,7 +48,7 @@ def main(title=None):
 
     soup = BeautifulSoup(text, 'html.parser')
     for card in reversed(soup.find('div', {'class': 'timeline-ver'}).find_all('a', {'class': 'anime-card-block'})):
-        anime_name = card.find('div', {'class': 'anime-name'}).find('p').text
+        anime_name = card.find('p', {'class': 'anime-name'}).text
         episode_p = card.find('div', {'class': 'anime-episode'}).find('p')
 
         anime_episode = None

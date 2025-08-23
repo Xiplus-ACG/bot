@@ -28,8 +28,12 @@ class AcgGamerComTwAcgDetail:
         self.ua = UserAgent()
 
     def getData(self, url):
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'}
-        text = requests.get(url, headers=headers).text
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            'Host': 'acg.gamer.com.tw',
+        }
+        url = url.replace('https://acg.gamer.com.tw/', 'https://104.16.223.104/')
+        text = requests.get(url, headers=headers, verify=False).text
         soup = BeautifulSoup(text, 'html.parser')
         data = {}
 

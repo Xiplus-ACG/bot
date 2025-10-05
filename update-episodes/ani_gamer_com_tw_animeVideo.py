@@ -62,7 +62,7 @@ def main(title=None):
         else:
             anime_episode = 1
 
-        matches = difflib.get_close_matches(anime_name, title_map.keys())
+        matches = difflib.get_close_matches(anime_name, title_map.keys(), cutoff=0.7)
         if len(matches) > 0:
             animeSite.updateItem(
                 datasite,

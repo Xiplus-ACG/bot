@@ -46,21 +46,21 @@ class AgefansTv:
 
         claims = item.get()['claims']
 
-        if 'P76' not in claims:
+        if 'P85' not in claims:
             logging.warning('\t No age claims')
             return
 
-        url = claims['P76'][0].getTarget()
+        url = 'https://www.agedm.org/detail/{}'.format(claims['P85'][0].getTarget())
         data = self.getData(url)
 
         # 總集數
         episodesOffset = 0
-        if 'P80' in claims['P76'][0].qualifiers:
-            episodesOffset = claims['P76'][0].qualifiers['P80'][0].getTarget().amount
+        if 'P80' in claims['P85'][0].qualifiers:
+            episodesOffset = claims['P85'][0].qualifiers['P80'][0].getTarget().amount
 
         new_episodes = None
-        if 'P81' in claims['P76'][0].qualifiers:
-            idx = int(claims['P76'][0].qualifiers['P81'][0].getTarget().amount) - 1
+        if 'P81' in claims['P85'][0].qualifiers:
+            idx = int(claims['P85'][0].qualifiers['P81'][0].getTarget().amount) - 1
             try:
                 new_episodes = data['other_episodes'][idx] + episodesOffset
             except IndexError as e:

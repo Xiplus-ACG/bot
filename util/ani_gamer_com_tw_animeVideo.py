@@ -143,7 +143,7 @@ class AniGamerComTwAnimeVideo:
                 if new_episodes > old_episodes:
                     episodesValue.amount = new_episodes
                     logging.info('\t Update episodes from %s to %s', old_episodes, new_episodes)
-                    claims['P27'][0].changeTarget(episodesValue, summary='更新總集數')
+                    claims['P27'][0].changeTarget(episodesValue, summary='更新總集數', bot=False)
                 elif new_episodes < old_episodes:
                     logging.warning('\t New episodes %s less than old episodes %s', new_episodes, old_episodes)
             else:
